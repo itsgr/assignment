@@ -1,23 +1,105 @@
-import logo from './logo.svg';
 import './App.css';
+
+const getList = () => {
+  const dataSet = {
+    "data": [
+      {
+        "id": 4633499533378,
+        "name": "Test 1",
+        "quantity": 3,
+        "product_id": 4460755157058,
+        "orderId": 7,
+        "orderDate": "2020-04-14T06:15:23.000Z"
+      }, {
+        "id": 4633579421762,
+        "name": "Test 2",
+        "quantity": 1,
+        "product_id": 4467615531074,
+        "orderId": 6,
+        "orderDate": "2020-04-14T06:42:47.000Z"
+      }, {
+        "id": 4633579454530,
+        "name": "Test 1",
+        "quantity": 2,
+        "product_id": 4460755157058,
+        "orderId": 6,
+        "orderDate": "2020-04-14T06:42:47.000Z"
+      }, {
+        "id": 4684687114306,
+        "name": "Test 4",
+        "quantity": 4,
+        "product_id": 4467830194242,
+        "orderId": 3,
+        "orderDate": "2020-04-24T10:07:57.000Z"
+      }, {
+        "id": 4684738265154,
+        "name": "Test 1",
+        "quantity": 2,
+        "product_id": 4460755157058,
+        "orderId": 3,
+        "orderDate": "2020-04-24T10:07:57.000Z"
+      }, {
+        "id": 4684890800194,
+        "name": "Test 6",
+        "quantity": 100,
+        "product_id": 4455579123778,
+        "orderId": 2,
+        "orderDate": "2020-04-24T11:41:40.000Z"
+      }, {
+        "id": 4684890832962,
+        "name": "Test 7",
+        "quantity": 60,
+        "product_id": 4455579025474,
+        "orderId": 2,
+        "orderDate": "2020-04-24T11:41:40.000Z"
+      }
+    ],
+    "status": true
+  };
+
+  // Get unique product_id and add quantity of duplicate product_id into one
+  const uniqueData = dataSet.data.reduce((accum, iterator) => {
+    if (accum.length === 0) {
+      accum.push(iterator);
+    } else {
+      const product = accum.find(value => value.product_id === iterator.product_id);
+      if (product) {
+        product.quantity += iterator.quantity;
+      } else {
+        accum.push(iterator);
+      }
+    }
+    return accum;
+  }, []);
+
+  // Return table rows with data values
+  return uniqueData.map(data =>
+    <tr key={ data.product_id }>
+      <td>{ data.id }</td>
+      <td>{ data.name }</td>
+      <td>{ data.quantity }</td>
+      <td>{ data.product_id }</td>
+      <td>{ data.orderId }</td>
+      <td>{ data.orderDate }</td>
+    </tr>);
+};
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <table>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Product Id</th>
+            <th>Order Id</th>
+            <th>Order Date</th>
+          </tr>
+        </thead>
+        <tbody>{ getList() }</tbody>
+      </table>
     </div>
   );
 }
